@@ -2,7 +2,6 @@
 
 """Import Necesarry Libraries"""
 
-# Commented out IPython magic to ensure Python compatibility.
 try:
 #     %tensorflow_version 2.x
 #     %load_ext tensorboard   
