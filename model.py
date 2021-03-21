@@ -297,3 +297,23 @@ results = model.fit(
     epochs=epochs,
     callbacks=callbacks
 )
+"""Analyse Results from the Test Set"""
+
+# Make predictions on test data
+predIdxs = model.predict(testX, batch_size=batch_size)
+print('Number of test scans: ', len(testX))
+print('Predicted class probabilities:')
+print()
+
+for n in range(len(predIdxs)):
+    my_formatted_list = ['%.2f' % elem for elem in predIdxs[n]]
+    print(f'{n}:  ', *my_formatted_list)
+
+# Find the predicted labels 
+predIdxs = np.argmax(predIdxs, axis=1)
+print('\nPredicted outcome (Covid=1, Normal=0):')
+print(predIdxs)
+print('Ground-truth outcome:')
+# print(testY)
+trueIdxs = np.argmax(testY, axis=1)
+print(trueIdxs)
