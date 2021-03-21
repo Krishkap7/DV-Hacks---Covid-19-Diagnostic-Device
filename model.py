@@ -191,3 +191,109 @@ normal_count = cases_count_tr.ravel()[0]
 class_weights = {0: 1.0, 1: normal_count / covid_count} 
 
 print('\nclass weights: ', class_weights)
+
+def get_arrays(df):
+    images, labels = [], []
+
+    img_paths = df.iloc[:,0].values # extract image paths from DataFrame
+    labels_ = df.iloc[:,1].values # extract labels from DataFrame
+
+    for i,path in enumerate(img_paths):
+        # load the image, swap color channels, and resize it to be a fixed 224x224 pixels while ignoring aspect ratio
+        image = cv2.imread(path)
+
+        # check if it's grayscale
+        if image.shape[2]==1:
+            print(image.shape[2])
+            image = np.dstack([image, image, image])
+
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        image = cv2.resize(image, (512, 512))
+        image = image / 255.0 # Normalize images to range [0,1]
+        # print('pre: ', labels_[i])
+        encoded_label = tf.keras.utils.to_categorical(labels_[i], num_classes=2)
+        # print('encoded: ',encoded_label )
+        images.append(image)
+        labels.append(encoded_label)
+
+    return np.array(images), np.array(labels)
+
+trainX, trainY = get_arrays(train_data)
+validX, validY = get_arrays(valid_data)
+testX, testY = get_arrays(test_data)
+
+# calculating class weights from trainset for class imabalance
+print(cases_count_tr)
+covid_pneumonia_count = cases_count_tr.ravel()[1]
+normal_count = cases_count_tr.ravel()[0]
+
+class_weights = {0: 1.0, 1: normal_count / covid_count} 
+
+print('\nclass weights: ', class_weights)
+
+"""Train on a VGG-19 Model"""
+
+def build_model(baseModel):
+
+      # Training models
+      newModel = baseModel.output
+      newModel = tf.keras.layers.AveragePooling2D(pool_size=(4, 4))(newModel)
+      newModel = tf.keras.layers.Flatten(name="flatten")(newModel)
+      newModel = tf.keras.layers.Dense(64, activation="relu")(newModel)
+      newModel = tf.keras.layers.Dropout(0.5)(newModel)
+      newModel = tf.keras.layers.Dense(2, activation="sigmoid")(newModel)
+
+      # Stack layers
+      model = tf.keras.models.Model(inputs=baseModel.input, outputs=newModel, name='Covid19_Detector')
+
+      return model
+
+baseModel = classifier = tf.keras.applications.VGG19(weights="imagenet", include_top=False,
+            input_tensor = tf.keras.layers.Input(shape=(512,512,3)))
+model = build_model(baseModel)
+
+model.compile(loss=tf.keras.losses.binary_crossentropy, optimizer='adam', metrics=["accuracy"])
+
+# initialize the training data augmentation object
+trained_model = tf.keras.preprocessing.image.ImageDataGenerator(
+    # rescale= 1 / 255.0,
+    rotation_range=15,
+    zoom_range=0.05,
+    width_shift_range=0.1,
+    height_shift_range=0.1,
+    shear_range=0.05,
+    fill_mode="nearest")
+
+  
+confirmed_model = tf.keras.preprocessing.image.ImageDataGenerator()
+
+
+early_stopping = tf.keras.callbacks.EarlyStopping(
+monitor='val_accuracy', 
+verbose=1,
+patience=15,
+mode='max',
+restore_best_weights=True
+)
+
+reduce_on_plateau = tf.keras.callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.25, patience=3, verbose=0, 
+                                                                    mode='auto', min_delta=0.0001, cooldown=0, min_lr=0)
+
+model_checkpoint = tf.keras.callbacks.ModelCheckpoint('VGG19_weights.h5', 
+                                                      monitor='val_accuracy', verbose=0, save_best_only=True, 
+                                                      save_weights_only=True, mode='max')
+
+
+callbacks = [early_stopping, reduce_on_plateau, model_checkpoint]
+
+batch_size = 15
+epochs = 100
+results = model.fit(
+    train_datagen.flow(trainX, trainY, batch_size=batch_size),
+    steps_per_epoch=len(trainX) // batch_size,
+    validation_data=valid_datagen.flow(validX, validY, batch_size=batch_size),
+    validation_steps=len(validX) // batch_size,
+    class_weight = class_weights,
+    epochs=epochs,
+    callbacks=callbacks
+)
