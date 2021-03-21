@@ -233,10 +233,10 @@ print('\nclass weights: ', class_weights)
 
 """Train on a VGG-19 Model"""
 
-def build_model(baseModel):
+def build_model(startModel):
 
       # Training models
-      newModel = baseModel.output
+      newModel = startModel.output
       newModel = tf.keras.layers.AveragePooling2D(pool_size=(4, 4))(newModel)
       newModel = tf.keras.layers.Flatten(name="flatten")(newModel)
       newModel = tf.keras.layers.Dense(64, activation="relu")(newModel)
@@ -244,13 +244,13 @@ def build_model(baseModel):
       newModel = tf.keras.layers.Dense(2, activation="sigmoid")(newModel)
 
       # Stack layers
-      model = tf.keras.models.Model(inputs=baseModel.input, outputs=newModel, name='Covid19_Detector')
+      model = tf.keras.models.Model(inputs=startModel.input, outputs=newModel, name='Covid19_Diagnostic')
 
       return model
 
-baseModel = classifier = tf.keras.applications.VGG19(weights="imagenet", include_top=False,
+startModel = classifier = tf.keras.applications.VGG19(weights="imagenet", include_top=False,
             input_tensor = tf.keras.layers.Input(shape=(512,512,3)))
-model = build_model(baseModel)
+model = build_model(startModel)
 
 model.compile(loss=tf.keras.losses.binary_crossentropy, optimizer='adam', metrics=["accuracy"])
 
@@ -297,23 +297,15 @@ results = model.fit(
     epochs=epochs,
     callbacks=callbacks
 )
-"""Analyse Results from the Test Set"""
+"""Make final predictions"""
 
 # Make predictions on test data
 predIdxs = model.predict(testX, batch_size=batch_size)
-print('Number of test scans: ', len(testX))
-print('Predicted class probabilities:')
-print()
-
-for n in range(len(predIdxs)):
-    my_formatted_list = ['%.2f' % elem for elem in predIdxs[n]]
-    print(f'{n}:  ', *my_formatted_list)
 
 # Find the predicted labels 
 predIdxs = np.argmax(predIdxs, axis=1)
-print('\nPredicted outcome (Covid=1, Normal=0):')
+print('\nThis is our models prediction: (Covid=1, Normal=0):')
 print(predIdxs)
-print('Ground-truth outcome:')
 # print(testY)
 trueIdxs = np.argmax(testY, axis=1)
 print(trueIdxs)
