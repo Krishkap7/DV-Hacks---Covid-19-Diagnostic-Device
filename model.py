@@ -121,3 +121,24 @@ for i in range(numExamples * 2):
 
 plt.tight_layout()
 plt.show()
+"""Split data for training and testing"""
+
+train_data, test_data = train_test_split(data, test_size=0.20,shuffle=True,random_state=12)
+train_data, valid_data = train_test_split(train_data, test_size=0.20, random_state=12)
+
+print('\nNumber of training pairs: ', len(train_data))
+print('Number of validation pairs: ', len(valid_data))
+print('Number of testing pairs: ', len(test_data))
+
+data['label'].value_counts()
+
+# Get the counts for each class
+cases_count = data['label'].value_counts()
+print('\t----- Entire Dataset ------')
+print('\t\t', cases_count.ravel())
+
+cases_count_tr = train_data['label'].value_counts()
+cases_count_val = valid_data['label'].value_counts()
+cases_count_tst = test_data['label'].value_counts()
+print('\n-- Train Set -- -- Validation Set -- -- Test Set --')
+print('  ', cases_count_tr.ravel(),'\t     ',cases_count_val.ravel(), '\t        ', cases_count_tst.ravel(), '\n\n')
