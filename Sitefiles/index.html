@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html style="scroll-behavior: smooth;">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Home - Covid Diagnostics Tool</title>
+    <meta name="description" content="Generate highly accurate COVID-19 infection predictions from human lung CT scans.">
+    <link rel="icon" type="image/png" sizes="115x115" href="assets/img/favicon.png?h=fa30d2bd01105805ee1d63a342d2eef5">
+    <link rel="icon" type="image/png" sizes="115x115" href="assets/img/favicon.png?h=fa30d2bd01105805ee1d63a342d2eef5">
+    <link rel="icon" type="image/png" sizes="115x115" href="assets/img/favicon.png?h=fa30d2bd01105805ee1d63a342d2eef5">
+    <link rel="icon" type="image/png" sizes="115x115" href="assets/img/favicon.png?h=fa30d2bd01105805ee1d63a342d2eef5">
+    <link rel="icon" type="image/png" sizes="115x115" href="assets/img/favicon.png?h=fa30d2bd01105805ee1d63a342d2eef5">
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css?h=17287e9b6f606fbf520c98b3b8b22f59">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cabin:700">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/styles.min.css?h=e3b54b3de760a19938b687eeb4ac7990">
+</head>
+
+<body id="page-top" data-bs-spy="scroll" data-bs-target="#mainNav" data-bs-offset="77">
+    <nav class="navbar navbar-light navbar-expand-md fixed-top" id="mainNav">
+        <div class="container"><a class="navbar-brand" href="#"><img src="assets/img/Str1k3r%20S1x.png?h=c20bc26b11696455c0eb7251a176f541" style="height: 72px;"></a><button data-bs-toggle="collapse" class="navbar-toggler navbar-toggler-right" data-bs-target="#navbarResponsive" type="button" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" value="Menu"><i class="fa fa-bars"></i></button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item nav-link"><a class="nav-link active" href="#">Home</a></li>
+                    <li class="nav-item nav-link"><a class="nav-link" href="#about">Disclaimer</a></li>
+                    <li class="nav-item nav-link"><a class="nav-link" href="#test">Test</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <header class="masthead" style="background: url(&quot;assets/img/pexels-linkedin-sales-navigator-2182976.jpg?h=58f1867e163bf2edf7f639442a37e2d6&quot;);background-size: contain;">
+        <div class="intro-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 mx-auto">
+                        <h1 class="brand-heading" style="font-size: 74px;">Instant COVID-19 test</h1>
+                        <p class="intro-text">Determine COVID infection from CT scans with 99% accuracy.</p><a class="btn btn-link btn-circle" href="#"><i class="fa fa-angle-double-down animated"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section class="text-center content-section" id="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h2>disclaimer</h2>
+                    <p>Although this test is highly accurate, it is not 100% accurate and patients should get an FDA approved COVID test when possible.</p>
+                    <p>Receiving a positive result is a good indication that the patient should quarantine and check into a hospital if there are preexisting conditions.</p>
+                    <p>Patients who receive a negative result must still abide by <a href="https://www.cdc.gov/coronavirus/2019-ncov/prevent-getting-sick/prevention.html" target="_blank">CDC COVID guidelines</a>&nbsp;including social distancing and mask wearing.</p><img src="assets/img/cases_rising_banner_900x275.png?h=f6666ed2e92c468a8cbbd845cf72fec5" style="max-width: 40rem;">
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="text-center download-section content-section" id="test">
+        <div class="container">
+            <div class="col-lg-8 mx-auto">
+                <h1>Test a ct scan image</h1>
+                <p>Enter a link to the image to test and click test. Results should appear within 30 seconds.</p>
+                <form></form><input type="url" class="linkin" placeholder="Link to CT Scan Image" style="background: none;border-radius: 7px;"><!-- Start: Simple Line BReak --><br><!-- End: Simple Line BReak --><button class="btn btn-primary btn-lg btn-default" onclick="test()">Test</button><!-- Start: Simple Line BReak --><br><!-- End: Simple Line BReak -->
+                <!-- Start: Simple Line BReak --><br><!-- End: Simple Line BReak -->
+                <div id="loading">
+                    <h2 style="color: var(--bs-red);display: none;">Result: Positive</h2>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="text-center content-section" id="contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h2>Contact us</h2>
+                    <p>Got a question or suggestion? Feel free to contact us via any of the methods listed below.</p>
+                    <ul class="list-inline banner-social-buttons">
+                        <li class="list-inline-item"><a class="btn btn-primary btn-lg btn-default" href="mailto:rohanpatra2003@gmail.com"><i class="fa fa-envelope-open-o fa-fw"></i><span class="network-name">&nbsp; Email</span></a>&nbsp;</li>
+                        <li class="list-inline-item"><a class="btn btn-primary btn-lg btn-default"><i class="fa fa-twitter fa-fw"></i><span class="network-name">&nbsp; Twitter</span></a>&nbsp;</li>
+                        <li class="list-inline-item"><a class="btn btn-primary btn-lg btn-default"><i class="fa fa-facebook fa-fw"></i><span class="network-name">&nbsp; facebook</span></a>&nbsp;</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <div class="container text-center">
+            <p>Copyright ©&nbsp;Covid Diagnostics Tool 2021</p>
+        </div>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-beta2/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/script.min.js?h=61a54c8aa65e32f3eb5b40d697f497f3"></script>
+</body>
+
+</html>
