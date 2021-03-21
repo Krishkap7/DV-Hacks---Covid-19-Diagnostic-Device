@@ -1,18 +1,7 @@
 """Import libraries"""
 
-try:
-#     %tensorflow_version 2.x
-#     %load_ext tensorboard   
-except Exception:
-  pass
-
-import tensorflow as tf
-from tensorflow import keras
-from tensorboard.plugins.hparams import api as hp"""Import libraries"""
 
 try:
-#     %tensorflow_version 2.x
-#     %load_ext tensorboard   
 except Exception:
   pass
 
