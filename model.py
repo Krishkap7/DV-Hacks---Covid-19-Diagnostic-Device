@@ -52,10 +52,10 @@ imagePaths = list(paths.list_images(datasetPath))
 
 data = []
 
-# select no. of classes to be loaded for Healthy, Bacterial Pneumonia, and Viral Pneumonia patients 
+# No of data points 
 numHealthyImages = 364
 
-i = 0 # initialize all 3 counters to decr. the no. of images loaded 
+i = 0
 for imagePath in imagePaths:
     # find the name of the class through the path tracker
     imageLabel = imagePath.split(os.path.sep)[-2]
@@ -67,8 +67,7 @@ for imagePath in imagePaths:
     elif imageLabel == 'covid':
       data.append((imagePath,imageLabel))
 
-print('\n creating a DataFrame...')
-# retrieve pandas dataframe from our data in the list 
+# retrieve pandas dataframe
 data = pd.DataFrame(data, columns=['image', 'label'],index=None)
 
 # randomize the dataset
