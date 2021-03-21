@@ -142,3 +142,52 @@ cases_count_val = valid_data['label'].value_counts()
 cases_count_tst = test_data['label'].value_counts()
 print('\n-- Train Set -- -- Validation Set -- -- Test Set --')
 print('  ', cases_count_tr.ravel(),'\t     ',cases_count_val.ravel(), '\t        ', cases_count_tst.ravel(), '\n\n')
+
+# Plot the results 
+plt.figure(figsize=(12,10))
+sns.barplot(x=cases_count.index, y= cases_count.values, palette=sns.cubehelix_palette(4, start=2.5, rot=0.6))
+plt.title('Frequency of Each Class in the Dataset', fontsize=14, color='w') 
+plt.xlabel('Case type', fontsize=12, color='w')
+plt.ylabel('Count', fontsize=12, color='w')
+plt.xticks(range(len(cases_count.index)), ['Normal (0)', 'Covid-19 (1)'], color='w')
+plt.yticks(color='w')
+plt.show()
+
+def get_arrays(df):
+    images, labels = [], []
+
+    img_paths = df.iloc[:,0].values # extract image paths from DataFrame
+    labels_ = df.iloc[:,1].values # extract labels from DataFrame
+
+    for i,path in enumerate(img_paths):
+        # load the image, swap color channels, and resize it to be a fixed 224x224 pixels while ignoring aspect ratio
+        image = cv2.imread(path)
+
+        # check if it's grayscale
+        if image.shape[2]==1:
+            print(image.shape[2])
+            image = np.dstack([image, image, image])
+
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        image = cv2.resize(image, (512, 512))
+        image = image / 255.0 # Normalize images to range [0,1]
+        # print('pre: ', labels_[i])
+        encoded_label = tf.keras.utils.to_categorical(labels_[i], num_classes=2)
+        # print('encoded: ',encoded_label )
+        images.append(image)
+        labels.append(encoded_label)
+
+    return np.array(images), np.array(labels)
+
+trainX, trainY = get_arrays(train_data)
+validX, validY = get_arrays(valid_data)
+testX, testY = get_arrays(test_data)
+
+# calculating class weights from trainset for class imabalance
+print(cases_count_tr)
+covid_pneumonia_count = cases_count_tr.ravel()[1]
+normal_count = cases_count_tr.ravel()[0]
+
+class_weights = {0: 1.0, 1: normal_count / covid_count} 
+
+print('\nclass weights: ', class_weights)
