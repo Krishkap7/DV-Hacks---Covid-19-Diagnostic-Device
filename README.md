@@ -2,9 +2,7 @@
 
 Databases and other recources used:
 
-data: https://www.kaggle.com/andrewmvd/covid19-ct-scans, https://www.kaggle.com/paultimothymooney/chest-xray-pneumonia, https://www.kaggle.com/data/186250, 
-
-Used parts of Display and Helper functions along with datasets: https://github.com/rekalantar/covid19_detector
+data: https://www.kaggle.com/andrewmvd/covid19-ct-scans, https://www.kaggle.com/paultimothymooney/chest-xray-pneumonia, https://www.kaggle.com/data/186250, https://www.bmj.com/content/370/bmj.m2426
 
 Also used Inspirit AI program notebooks for VGG-19 model and data splitters
 Used a multitude of libraries in the code
